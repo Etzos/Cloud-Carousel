@@ -1,12 +1,29 @@
-//////////////////////////////////////////////////////////////////////////////////
-// CloudCarousel V1.0.5
-// (c) 2011 by R Cecco. <http://www.professorcloud.com>
-// MIT License
-//
-// Reflection code based on plugin by Christophe Beyls <http://www.digitalia.be>
-//
-// Please retain this copyright header in all versions of the software
-//////////////////////////////////////////////////////////////////////////////////
+/* CloudCarousel
+ *
+ * Original work Copyright (c) 2011 by R Cecco. <http://www.professorcloud.com/>
+ * Modified work Copyright (c) 2014 Kevin Ott <supercodingmonkey@gmail.com>
+ *
+ * The MIT License (MIT)
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * Reflection code based on plugin by Christophe Beyls <http://www.digitalia.be/>
+ */
 
 (function($) {
 	/**
@@ -134,7 +151,7 @@
 			});
 		}
 		$(container).bind('click', this, function(event) {
-			clearInterval(event.data.autoRotateTimer);		// Stop auto rotation if mouse over.
+			clearInterval(event.data.autoRotateTimer); // Stop auto rotation if mouse over.
 			var text = $(event.target).attr('alt');
 			// If we have moved over a carousel item, then show the alt and title text.
 
@@ -292,9 +309,6 @@
 				this.stop();
 			}
 		};
-
-		// Create an Item object for each image	
-//		func = function(){return;ctx.updateAll();} ;
 
 		// Check if images have loaded. We need valid widths and heights for the reflections.
 		this.checkImagesLoaded = function()
