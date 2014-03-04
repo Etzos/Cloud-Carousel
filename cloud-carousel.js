@@ -101,6 +101,8 @@
             funcSin = Math.sin,
             funcCos = Math.cos,
             ctx = this;
+        var cWidth = parseInt(container.style.width, 10),
+            cHeight = parseInt(container.style.height, 10);
         this.controlTimer = 0;
         this.stopped = false;
         //this.imagesLoaded = 0;
@@ -110,14 +112,13 @@
         this.showFrontTextTimer = 0;
         this.autoRotateTimer = 0;
         if (options.xRadius === 0) {
-            this.xRadius = ($(container).width() / 2.3);
+            this.xRadius = cWidth / 2.3;
         }
         if (options.yRadius === 0) {
-            this.yRadius = ($(container).height() / 6);
+            this.yRadius = cHeight / 6;
         }
-
-        this.xCentre = options.xPos;
-        this.yCentre = options.yPos;
+        this.xCentre = cWidth / 2;
+        this.yCentre = cHeight / 6;
         this.frontIndex = 0;	// Index of the item at the front
 
         // Start with the first item at the front.
