@@ -137,10 +137,12 @@
         // Setup the buttons.
         $(options.buttonLeft).bind('mouseup', this, function(event) {
             event.data.rotate(-1);
+            event.data.resetRotate();
             return false;
         });
         $(options.buttonRight).bind('mouseup', this, function(event) {
             event.data.rotate(1);
+            event.data.resetRotate();
             return false;
         });
 
@@ -180,7 +182,7 @@
             context.showFrontTextTimer = setTimeout(function() {
                 context.showFrontText();
             }, 1000);
-            context.autoRotate();	// Start auto rotation.
+            context.resetRotate();
         });
 
         // Prevent items from being selected as mouse is moved and clicked in the container.
@@ -236,6 +238,11 @@
                     ctx.rotate(dir);
                 }, options.autoRotateDelay);
             }
+        };
+
+        this.resetRotate = function() {
+            clearTimeout(this.autoRotateTimer);
+            this.autoRotate();
         };
 
         // This is the main loop function that moves everything.
