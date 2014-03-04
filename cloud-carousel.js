@@ -156,9 +156,7 @@
             var text = $(event.target).attr('alt');
             // If we have moved over a carousel item, then show the alt and title text.
 
-            if (text !== undefined && text !== null)
-            {
-
+            if (text !== undefined && text !== null) {
                 clearTimeout(event.data.showFrontTextTimer);
                 $(options.altBox).html(($(event.target).attr('alt')));
                 $(options.titleBox).html(($(event.target).attr('title')));
@@ -199,9 +197,10 @@
         // Shows the text from the front most item.
         this.showFrontText = function() {
             var currentItemIndex = (this.frontIndex + items.length) % items.length;
+            // Ignore unloaded items
             if (items[ currentItemIndex ] === undefined) {
                 return;
-            }	// Images might not have loaded yet.
+            }
             $(options.titleBox).html($(items[ currentItemIndex ].image).attr('title'));
             $(options.altBox).html($(items[ currentItemIndex ].image).attr('alt'));
         };
