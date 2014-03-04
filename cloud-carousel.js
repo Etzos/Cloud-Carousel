@@ -268,8 +268,8 @@
             // See http://dev.opera.com/articles/view/efficient-javascript/?page=3
             this.innerWrapper.style.display = 'none';
 
-            var style;
-            var px = 'px', reflHeight;
+            var style,
+                reflHeight;
             var context = this;
             for (var i = 0; i < itemsLen; i++) {
                 item = items[i];
@@ -283,21 +283,23 @@
 
                 if (item.imageOK) {
                     var img = item.image;
-                    w = img.style.width = item.orgWidth * scale + "px";
-                    h = img.style.height = item.orgHeight * scale + "px";
+                    w = img.style.width = item.orgWidth * scale;
+                    h = img.style.height = item.orgHeight * scale;
+                    img.style.width = w + "px";
+                    img.style.height = h + "px";
                     img.style.left = x + "px";
                     img.style.top = y + "px";
-                    img.style.zIndex = "" + (scale * 100) >> 0;	// >>0 = Math.foor(). Firefox doesn't like fractional decimals in z-index.
+                    img.style.zIndex = (scale * 100) >> 0;	// >>0 = Math.foor(). Firefox doesn't like fractional decimals in z-index.
                     if (item.reflection !== null) {
                         reflHeight = options.reflHeight * scale;
                         style = item.reflection.element.style;
-                        style.left = x + px;
-                        style.top = y + h + options.reflGap * scale + px;
-                        style.width = w + px;
+                        style.left = x + "px";
+                        style.top = y + h + options.reflGap * scale + "px";
+                        style.width = w + "px";
                         if (isMSIE) {
                             style.filter.finishy = (reflHeight / h * 100);
                         } else {
-                            style.height = reflHeight + px;
+                            style.height = reflHeight + "px";
                         }
                     }
                 }
