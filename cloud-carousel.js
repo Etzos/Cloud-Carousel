@@ -134,9 +134,6 @@
         // within it to work.
         $(container).css({position: 'relative', overflow: 'hidden'});
 
-        $(options.buttonLeft).css('display', 'inline');
-        $(options.buttonRight).css('display', 'inline');
-
         // Setup the buttons.
         $(options.buttonLeft).bind('mouseup', this, function(event) {
             event.data.rotate(-1);
