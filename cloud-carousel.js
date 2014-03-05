@@ -68,8 +68,8 @@
         }
         // Store a copy of the alt and title attrs into the reflection
         $(reflection).attr({
-            'alt': $(img).attr('alt'),
-            'title': $(img).attr('title')
+            alt: $(img).attr('alt'),
+            title: $(img).attr('title')
         });
     }
 
@@ -133,9 +133,11 @@
         this.rotation = this.destRotation = Math.PI / 2;
         this.timeDelay = 1000 / options.FPS;
 
-        // Turn on the infoBox
+        // Turn on the infoBox (Should probably be assumed to be visible)
         if (options.altBox !== null) {
             $(options.altBox).css('display', 'block');
+        }
+        if (options.titleBox !== null) {
             $(options.titleBox).css('display', 'block');
         }
         // Turn on relative position for container to allow absolutely positioned elements
@@ -185,6 +187,7 @@
                 }
             }
         });
+
         // If we have moved out of a carousel item (or the container itself),
         // restore the text of the front item in 1 second.
         $(container).bind('mouseout', this, function(event) {
