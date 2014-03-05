@@ -189,6 +189,12 @@
             }
         });
 
+        $container.bind('mouseover', this, function() {
+            // TODO: Stop autorotation timer?
+            var context = event.data;
+            context.stopRotateTimer();
+        });
+
         // If we have moved out of a carousel item (or the container itself),
         // restore the text of the front item in 1 second.
         $container.bind('mouseout', this, function(event) {
@@ -257,6 +263,10 @@
         this.resetRotate = function() {
             clearTimeout(this.autoRotateTimer);
             this.autoRotate();
+        };
+
+        this.stopRotateTimer = function() {
+            clearTimeout(this.autoRotateTimer);
         };
 
         // This is the main loop function that moves everything.
