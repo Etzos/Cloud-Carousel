@@ -140,9 +140,10 @@
         if (options.titleBox !== null) {
             $(options.titleBox).css('display', 'block');
         }
+        var $container = $(container);
         // Turn on relative position for container to allow absolutely positioned elements
         // within it to work.
-        $(container).css({
+        $container.css({
             position: 'relative',
             overflow: 'hidden'
        });
@@ -161,12 +162,12 @@
 
         // You will need this plugin for the mousewheel to work: http://plugins.jquery.com/project/mousewheel
         if (options.mouseWheel) {
-            $(container).bind('mousewheel', this, function(event, delta) {
+            $container.bind('mousewheel', this, function(event, delta) {
                 event.data.rotate(delta);
                 return false;
             });
         }
-        $(container).bind('click', this, function(event) {
+        $container.bind('click', this, function(event) {
             clearInterval(event.data.autoRotateTimer); // Stop auto rotation if mouse over.
             var text = $(event.target).attr('alt');
             // If we have moved over a carousel item, then show the alt and title text.
@@ -190,7 +191,7 @@
 
         // If we have moved out of a carousel item (or the container itself),
         // restore the text of the front item in 1 second.
-        $(container).bind('mouseout', this, function(event) {
+        $container.bind('mouseout', this, function(event) {
             var context = event.data;
             clearTimeout(context.showFrontTextTimer);
             context.showFrontTextTimer = setTimeout(function() {
@@ -200,7 +201,7 @@
         });
 
         // Prevent items from being selected as mouse is moved and clicked in the container.
-        $(container).bind('mousedown', this, function(event) {
+        $container.bind('mousedown', this, function(event) {
             event.data.container.focus();
             return false;
         });
@@ -208,7 +209,7 @@
             return false;
         };		// For IE.
 
-        this.innerWrapper = $(container).wrapInner('<div style="position:absolute;width:100%;height:100%;"/>').children()[0];
+        this.innerWrapper = $container.wrapInner('<div style="position:absolute;width:100%;height:100%;"/>').children()[0];
 
         // Shows the text from the front most item.
         this.showFrontText = function() {
