@@ -288,23 +288,23 @@
 
                 scale = ((sinVal + 1) * smallRange) + minScale;
 
-                x = this.xCentre + (((funcCos(radians) * this.xRadius) - (item.orgWidth * 0.5)) * scale);
-                y = this.yCentre + (((sinVal * this.yRadius)) * scale);
+                x = Math.round(this.xCentre + (((funcCos(radians) * this.xRadius) - (item.orgWidth * 0.5)) * scale));
+                y = Math.round(this.yCentre + (((sinVal * this.yRadius)) * scale));
 
                 if (item.imageOK) {
                     var img = item.image;
-                    w = img.style.width = item.orgWidth * scale;
-                    h = img.style.height = item.orgHeight * scale;
+                    w = Math.round(item.orgWidth * scale);
+                    h = Math.round(item.orgHeight * scale);
                     img.style.width = w + "px";
                     img.style.height = h + "px";
                     img.style.left = x + "px";
                     img.style.top = y + "px";
-                    img.style.zIndex = (scale * 100) >> 0;	// >>0 = Math.foor(). Firefox doesn't like fractional decimals in z-index.
+                    img.style.zIndex = Math.floor(scale * 100); // z-index must be an int
                     if (item.reflection !== null) {
-                        reflHeight = options.reflHeight * scale;
+                        reflHeight = Math.round(options.reflHeight * scale);
                         style = item.reflection.element.style;
                         style.left = x + "px";
-                        style.top = y + h + options.reflGap * scale + "px";
+                        style.top = y + h + Math.round(options.reflGap * scale) + "px";
                         style.width = w + "px";
                         if (isMSIE) {
                             style.filter.finishy = (reflHeight / h * 100);
