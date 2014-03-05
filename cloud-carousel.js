@@ -33,7 +33,9 @@
      * @param {type} opacity
      */
     function Reflection(img, reflHeight, opacity) {
-        var reflection, cntx, imageWidth = img.width, imageHeight = img.width, gradient, parent;
+        var reflection, cntx, gradient, parent;
+        var imageWidth = parseInt(img.width, 10),
+            imageHeight = parseInt(img.height, 10);
 
         parent = $(img.parentNode);
         this.element = reflection = parent.append("<canvas class='reflection' style='position:absolute'/>").find(':last')[0];
@@ -45,7 +47,10 @@
         } else {
             cntx = reflection.getContext("2d");
             try {
-                $(reflection).attr({width: imageWidth, height: reflHeight});
+                $(reflection).attr({
+                    width: imageWidth + "px",
+                    height: reflHeight + "px"
+                });
                 cntx.save();
                 cntx.translate(0, imageHeight - 1);
                 cntx.scale(1, -1);
@@ -62,7 +67,10 @@
             }
         }
         // Store a copy of the alt and title attrs into the reflection
-        $(reflection).attr({'alt': $(img).attr('alt'), title: $(img).attr('title')});
+        $(reflection).attr({
+            'alt': $(img).attr('alt'),
+            'title': $(img).attr('title')
+        });
     }
 
     /**
@@ -132,7 +140,10 @@
         }
         // Turn on relative position for container to allow absolutely positioned elements
         // within it to work.
-        $(container).css({position: 'relative', overflow: 'hidden'});
+        $(container).css({
+            position: 'relative',
+            overflow: 'hidden'
+       });
 
         // Setup the buttons.
         $(options.buttonLeft).bind('mouseup', this, function(event) {
@@ -224,8 +235,7 @@
 
         // Starts the rotation of the carousel. Direction is the number (+-) of carousel items to rotate by.
         this.rotate = function(direction) {
-            this.frontIndex -= direction;
-            this.frontIndex %= items.length;
+            this.frontIndex = (this.frontIndex - direction) % items.length;
             this.destRotation += (Math.PI / items.length) * (2 * direction);
             this.showFrontText();
             this.go();
@@ -320,8 +330,7 @@
         };
 
         // Check if images have loaded. We need valid widths and heights for the reflections.
-        this.checkImagesLoaded = function()
-        {
+        this.checkImagesLoaded = function() {
             var i;
             for (i = 0; i < images.length; i++) {
                 if ((images[i].width === undefined) || ((images[i].complete !== undefined) && (!images[i].complete))) {
