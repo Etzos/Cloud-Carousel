@@ -131,8 +131,8 @@
         // Start with the first item at the front.
         this.rotation = this.destRotation = Math.PI / 2;
 
-        // Time of last frame
-        this.lastFrameTime = null;
+        // Whether or not an autorotation has been done (prevents duplicate autorotate calls)
+        this.autoRotated = false;
 
         // Get the requestAnimationFrame() that's available
         var reqFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
@@ -255,6 +255,10 @@
             if (options.autoRotate !== 'no') {
                 var dir = (options.autoRotate === 'right') ? 1 : -1;
                 this.autoRotateTimer = setInterval(function() {
+                    if(ctx.autoRotated) {
+                        return;
+                    }
+                    ctx.autoRotated = true;
                     ctx.rotate(dir);
                 }, options.autoRotateDelay);
             }
@@ -283,8 +287,11 @@
             var absChange = Math.abs(change);
 
             this.rotation += change * options.speed;
+            // If this is the case, the rotation to an item is complete
             if (absChange < 0.001) {
                 this.rotation = this.destRotation;
+                // Reset the autoRotation check
+                this.autoRotated = false;
             }
             var itemsLen = items.length;
             var spacing = (Math.PI / itemsLen) * 2;
