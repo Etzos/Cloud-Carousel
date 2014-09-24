@@ -111,7 +111,6 @@
             ctx = this;
         var cWidth = parseInt(container.style.width, 10),
             cHeight = parseInt(container.style.height, 10);
-        this.controlTimer = 0;
         this.stopped = false;
         //this.imagesLoaded = 0;
         this.container = container;
@@ -131,7 +130,16 @@
 
         // Start with the first item at the front.
         this.rotation = this.destRotation = Math.PI / 2;
-        this.timeDelay = 1000 / options.FPS;
+
+        // Time of last frame
+        this.lastFrameTime = null;
+
+        // Get the requestAnimationFrame() that's available
+        var reqFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+                       window.webkitRequestAnimationFrame || window.msRequestAnimationFrame ||
+                       function() {
+                           // TODO: Provide setInterval polyfill
+                       };
 
         // Turn on the infoBox (Should probably be assumed to be visible)
         if (options.altBox !== null) {
@@ -189,8 +197,7 @@
             }
         });
 
-        $container.bind('mouseover', this, function() {
-            // TODO: Stop autorotation timer?
+        $container.bind('mouseover', this, function(event) {
             var context = event.data;
             context.stopRotateTimer();
         });
@@ -229,18 +236,11 @@
         };
 
         this.go = function() {
-            if (this.controlTimer !== 0) {
-                return;
-            }
-            var context = this;
-            this.controlTimer = setTimeout(function() {
-                context.updateAll();
-            }, this.timeDelay);
+            this.pauseUpdate = false;
         };
 
         this.stop = function() {
-            clearTimeout(this.controlTimer);
-            this.controlTimer = 0;
+            this.pauseUpdate = true;
         };
 
         // Starts the rotation of the carousel. Direction is the number (+-) of carousel items to rotate by.
@@ -269,9 +269,13 @@
             clearTimeout(this.autoRotateTimer);
         };
 
-        // This is the main loop function that moves everything.
-        this.updateAll = function() {
-            var minScale = options.minScale;	// This is the smallest scale applied to the furthest item.
+        this.updateTick = function(curTime) {
+            reqFrame(this.updateTick.bind(this));
+            // Don't animate when paused or when there's not going to be a change
+            if (this.pauseUpdate || this.destRotation == this.rotation) {
+                return;
+            }
+            var minScale = options.minScale;    // This is the smallest scale applied to the furthest item.
             var smallRange = (1 - minScale) * 0.5;
             var w, h, x, y, scale, item, sinVal;
 
@@ -284,7 +288,7 @@
             }
             var itemsLen = items.length;
             var spacing = (Math.PI / itemsLen) * 2;
-            //var	wrapStyle = null;
+            //var   wrapStyle = null;
             var radians = this.rotation;
             var isMSIE = $.browser.msie;
 
@@ -331,16 +335,6 @@
             }
             // Turn display back on.
             this.innerWrapper.style.display = 'block';
-
-            // If we have a preceptable change in rotation then loop again next frame.
-            if (absChange >= 0.001) {
-                this.controlTimer = setTimeout(function() {
-                    context.updateAll();
-                }, this.timeDelay);
-            } else {
-                // Otherwise just stop completely.
-                this.stop();
-            }
         };
 
         // Check if images have loaded. We need valid widths and heights for the reflections.
@@ -359,7 +353,8 @@
             clearInterval(this.tt);
             this.showFrontText();
             this.autoRotate();
-            this.updateAll();
+            this.go();
+            reqFrame(this.updateTick.bind(this));
         };
 
         this.tt = setInterval(function() {
@@ -381,7 +376,6 @@
                 yRadius: 0,
                 altBox: null,
                 titleBox: null,
-                FPS: 30,
                 autoRotate: 'no',
                 autoRotateDelay: 1500,
                 speed: 0.2,
