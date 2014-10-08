@@ -109,7 +109,7 @@
             funcSin = Math.sin,
             funcCos = Math.cos,
             ctx = this;
-        var cWidth = parseInt(container.style.width, 10),
+        var cWidth = parseInt($(container).width(), 10),
             cHeight = parseInt(container.style.height, 10);
         this.stopped = false;
         //this.imagesLoaded = 0;
